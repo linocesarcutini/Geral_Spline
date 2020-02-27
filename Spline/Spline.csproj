@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ChangeText</RootNamespace>
     <AssemblyName>Spline</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -32,18 +32,14 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcCoreMgd">
-      <HintPath>C:\Autodesk\ObjectARX 2018\inc\AcCoreMgd.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>False</Private>
+    <Reference Include="accoremgd">
+      <HintPath>D:\Autodesk\AutoCAD 2020\accoremgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcDbMgd">
-      <HintPath>C:\Autodesk\ObjectARX 2018\inc\AcDbMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="acdbmgd">
+      <HintPath>D:\Autodesk\AutoCAD 2020\acdbmgd.dll</HintPath>
     </Reference>
-    <Reference Include="AcMgd">
-      <HintPath>C:\Autodesk\ObjectARX 2018\inc\AcMgd.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="acmgd">
+      <HintPath>D:\Autodesk\AutoCAD 2020\acmgd.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -52,6 +48,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>

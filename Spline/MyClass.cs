@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using Autodesk.AutoCAD.Runtime;
 using Autodesk.AutoCAD.Geometry;
 using Autodesk.AutoCAD.EditorInput;
@@ -15,8 +16,33 @@ namespace MySpline
         [CommandMethod("ss")]
         public static void AddSpline()
         {
+            if (!Ativacao())
+            {
+                MessageBox.Show("Esta API não está ativada. Entre em contato com a SELTTE!");
+                return;
+            }
+
             pt1x = GetPoint();
+
+            // Caso não se clique em lugar algum, o comando é finalizado
+            if (pt1x.X == 0.0 && pt1x.Y == 0.0)
+            {
+                Editor editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor;
+
+                editor.WriteMessage("\n-> Cancelado!\n");
+                return;
+            }
+
             pt2x = GetPoint();
+
+            // Caso não se clique em lugar algum, o comando é finalizado
+            if (pt2x.X == 0.0 && pt2x.Y == 0.0)
+            {
+                Editor editor = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.Editor;
+
+                editor.WriteMessage("\n-> Cancelado!\n");
+                return;
+            }
 
             pt1 = new Point2d(pt1x.X, pt1x.Y);
             pt2 = new Point2d(pt2x.X, pt2x.Y);
@@ -30,7 +56,7 @@ namespace MySpline
             }
 
             // Get the current document and database
-            Document acDoc = Application.DocumentManager.MdiActiveDocument;
+            Document acDoc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database acCurDb = acDoc.Database;
             Editor ed = acDoc.Editor;
 
@@ -88,7 +114,7 @@ namespace MySpline
         {
             Point3d pt;
 
-            Document document = Application.DocumentManager.MdiActiveDocument;
+            Document document = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
             Database database = document.Database;
 
             PromptPointOptions pPopt = new PromptPointOptions("\nSelecione o ponto");
@@ -102,6 +128,35 @@ namespace MySpline
         {
             return new Point2d(pPt.X + dDist * Math.Cos(dAng),
                                 pPt.Y + dDist * Math.Sin(dAng));
+        }
+
+        static bool Ativacao()
+        {
+            bool ativacao = true;
+            object autocadAtiv;
+
+            try
+            {
+                RegistryKey autocad = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Autodesk\AutoCAD\");
+                object autocadCurver = autocad.GetValue("CurVer");
+                autocad = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Autodesk\AutoCAD\" + autocadCurver + @"\");
+                object autocadLang = autocad.GetValue("CurVer");
+                autocad = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Autodesk\AutoCAD\" + autocadCurver +
+                    @"\" + autocadLang + @"\Applications\");
+                autocadAtiv = autocad.GetValue("1");
+            }
+            catch (System.Exception)
+            {
+                ativacao = false;
+                throw;
+            }
+
+            if (autocadAtiv == null)
+            {
+                ativacao = false;
+            }
+
+            return ativacao;
         }
     }
 }
